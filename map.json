@@ -1,0 +1,63 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "width": 960,
+  "height": 500,
+  "autosize": "none",
+
+  "data": [
+    {
+      "name": "unemp",
+      "url": "https://raw.githubusercontent.com/jdao1/VegaHW3/master/2015_convert.tsv",
+      "format": {"type": "tsv", "parse": "auto"}
+    },
+    {
+      "name": "states",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"},
+      "transform": [
+        { "type": "lookup", "from": "unemp", "key": "id", "fields": ["id"], "values": ["Amount"] },
+        { "type": "joinaggregate", "fields": ["states"], "ops": ["sum"]}
+      ]
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "albersUsa"
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "color",
+      "type": "threshold",
+      "domain": [0, 500000000],
+      "range": {"scheme": "blues", "count": 7}
+    }
+  ],
+
+  "legends": [
+    {
+      "fill": "color",
+      "orient": "bottom-right",
+      "title": "Unemployment"
+      
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "shape",
+      "from": {"data": "states"},
+      "encode": {
+        "enter": { "tooltip": {"signal": "format(datum.Amount, '$')"}},
+        "update": { "fill": {"scale": "color", "field": "Amount"} },
+        "hover": { "fill": {"value": "darkblue"} }
+      },
+      "transform": [
+        { "type": "geoshape", "projection": "projection" }
+      ]
+    }
+  ]
+}
