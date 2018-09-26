@@ -1,4 +1,4 @@
-﻿State_Code	State_Name	State_Abv	Damage_Code	Damage_Descp	Amount
+﻿id	state	State_Abv	Damage_Code	Damage_Descp	Amount
 2	Alaska	AK	1	Decline in Price	2728
 2	Alaska	AK	11	Drought	61674
 1	Alabama	AL	1	Decline in Price	691645
